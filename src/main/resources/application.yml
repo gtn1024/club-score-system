@@ -19,3 +19,4 @@ sa-token:
   is-share: false
   token-style: uuid
   is-log: true
+  jwt-secret-key: ${JWT_SECRET_KEY:9jieWcCw3rxGlSOWc2G76r0PgmKeTUhX}
