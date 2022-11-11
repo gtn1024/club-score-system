@@ -22,6 +22,10 @@ public class UserController {
 
     @PostMapping
     public User newUser(@Valid @RequestBody NewUserRequest request) {
+        if (userService.isUsernameExist(request.username())) {
+            // TODO: use custom exception
+            throw new RuntimeException("Username already exist");
+        }
         User user = new User();
         user.setUsername(request.username());
         user.setPassword(PasswordUtil.hashPassword(request.username(), request.password()));
