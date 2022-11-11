@@ -23,19 +23,19 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
         return userService
-                .findByUsername(userLoginRequest.username())
-                .map(u -> {
-                    if (PasswordUtil.checkPassword(u.getPassword(), userLoginRequest.username(), userLoginRequest.password())) {
-                        StpUtil.login(u.getId());
-                        return StpUtil.getTokenValue();
-                    } else {
-                        // TODO: use custom exception
-                        throw new RuntimeException("密码错误");
-                    }
-                })
-                .orElseThrow(() -> {
+            .findByUsername(userLoginRequest.username())
+            .map(u -> {
+                if (PasswordUtil.checkPassword(u.getPassword(), userLoginRequest.username(), userLoginRequest.password())) {
+                    StpUtil.login(u.getId());
+                    return StpUtil.getTokenValue();
+                } else {
                     // TODO: use custom exception
-                    return new RuntimeException("user not found");
-                });
+                    throw new RuntimeException("密码错误");
+                }
+            })
+            .orElseThrow(() -> {
+                // TODO: use custom exception
+                return new RuntimeException("user not found");
+            });
     }
 }
