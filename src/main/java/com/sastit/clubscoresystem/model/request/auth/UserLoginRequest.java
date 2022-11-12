@@ -1,7 +1,9 @@
 package com.sastit.clubscoresystem.model.request.auth;
 
+import javax.validation.constraints.NotNull;
+
 public record UserLoginRequest(
-    String username,
-    String password
+    @NotNull String username,
+    @NotNull String password
 ) {
 }

@@ -29,6 +29,7 @@ public class UserController {
         User user = new User();
         user.setUsername(request.username());
         user.setPassword(PasswordUtil.hashPassword(request.username(), request.password()));
+        user.setRealName(request.realName());
         return userService.newUser(user);
     }
 }
