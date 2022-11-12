@@ -1,9 +1,7 @@
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export const Welcome = defineComponent({
   setup() {
-    return () => <>
-      Hello World
-    </>;
-  }
-})
+    return () => <>Hello World</>;
+  },
+});
