@@ -5,6 +5,9 @@ import { createRouter } from "vue-router";
 import { history } from "./shared/history";
 import { routes } from "./config/routes";
 
+import "vfonts/Lato.css";
+import "vfonts/FiraCode.css";
+
 const router = createRouter({ history, routes });
 
 const app = createApp(App);
