@@ -15,15 +15,15 @@ import java.time.Instant;
 @Getter
 @Setter
 public abstract class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
 
-    @CreationTimestamp
-    private Instant createdAt;
+  @CreationTimestamp
+  private Instant createdAt;
 
-    @UpdateTimestamp
-    private Instant updatedAt;
+  @UpdateTimestamp
+  private Instant updatedAt;
 
-    private Boolean deleted = false;
+  private Boolean deleted = false;
 }

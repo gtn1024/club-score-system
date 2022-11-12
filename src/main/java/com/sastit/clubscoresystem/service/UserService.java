@@ -5,13 +5,13 @@ import com.sastit.clubscoresystem.model.entity.User;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<User> findById(Long id);
+  Optional<User> findById(Long id);
 
-    User newUser(User user);
+  User newUser(User user);
 
-    boolean isUsernameExist(String username);
+  boolean isUsernameExist(String username);
 
-    Optional<User> findByUsername(String username);
+  Optional<User> findByUsername(String username);
 
-    Long count();
+  Long count();
 }

@@ -10,14 +10,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SaTokenConfigure implements WebMvcConfigurer {
-    @Bean
-    public StpLogic getStpLogicJwt() {
-        return new StpLogicJwtForStateless();
-    }
+  @Bean
+  public StpLogic getStpLogicJwt() {
+    return new StpLogicJwtForStateless();
+  }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SaInterceptor())
-            .addPathPatterns("/**");
-    }
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(new SaInterceptor())
+      .addPathPatterns("/**");
+  }
 }

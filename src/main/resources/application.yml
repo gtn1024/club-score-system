@@ -1,22 +1,22 @@
 spring:
-    datasource:
-        url: jdbc:postgresql://${PG_HOST:localhost}:${PG_PORT:5432}/${PG_DATABASE:clubscore_dev}
-        username: ${PG_USER:clubscore}
-        password: ${PG_PASSWORD:123456}
-        driver-class-name: org.postgresql.Driver
-    jpa:
-        hibernate:
-            ddl-auto: update
-    jackson:
-        default-property-inclusion: NON_NULL
+  datasource:
+    url: jdbc:postgresql://${PG_HOST:localhost}:${PG_PORT:5432}/${PG_DATABASE:clubscore_dev}
+    username: ${PG_USER:clubscore}
+    password: ${PG_PASSWORD:123456}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  jackson:
+    default-property-inclusion: NON_NULL
 
 # sa-token configuration
 sa-token:
-    token-name: tk
-    timeout: 604800
-    activity-timeout: -1
-    is-concurrent: false
-    is-share: false
-    token-style: uuid
-    is-log: true
-    jwt-secret-key: ${JWT_SECRET_KEY:9jieWcCw3rxGlSOWc2G76r0PgmKeTUhX}
+  token-name: tk
+  timeout: 604800
+  activity-timeout: -1
+  is-concurrent: false
+  is-share: false
+  token-style: uuid
+  is-log: true
+  jwt-secret-key: ${JWT_SECRET_KEY:9jieWcCw3rxGlSOWc2G76r0PgmKeTUhX}

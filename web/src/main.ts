@@ -1,11 +1,11 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import './style.css'
-import { App } from "./App";
-import { createRouter } from 'vue-router';
-import { history } from './shared/history';
-import { routes } from './config/routes';
+import {App} from "./App";
+import {createRouter} from 'vue-router';
+import {history} from './shared/history';
+import {routes} from './config/routes';
 
-const router = createRouter({ history, routes })
+const router = createRouter({history, routes})
 
 const app = createApp(App)
 app.use(router)

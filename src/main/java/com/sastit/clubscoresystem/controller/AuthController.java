@@ -19,49 +19,49 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private final UserService userService;
+  private final UserService userService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
+  public AuthController(UserService userService) {
+    this.userService = userService;
+  }
 
-    @PostMapping("/login")
-    public SaResult login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
-        return userService
-            .findByUsername(userLoginRequest.username())
-            .map(u -> {
-                if (PasswordUtil.checkPassword(u.getPassword(), userLoginRequest.username(), userLoginRequest.password())) {
-                    StpUtil.login(u.getId());
-                    SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-                    return SaResult.data(tokenInfo);
-                } else {
-                    // TODO: use custom exception
-                    throw new RuntimeException("密码错误");
-                }
-            })
-            // TODO: 返回 404
-            .orElseThrow(() -> {
-                // TODO: use custom exception
-                return new RuntimeException("user not found");
-            });
-    }
-
-    @SaCheckLogin
-    @GetMapping("/current")
-    public User getCurrentUser() {
-        System.out.println(StpUtil.getPermissionList());
-        System.out.println(StpUtil.getRoleList());
-        if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
-            Long id = Long.parseLong(sid);
-            return userService
-                .findById(id)
-                // TODO: 返回404
-                .orElseThrow(() -> {
-                    // TODO: use custom exception
-                    return new RuntimeException("User id does not exist!");
-                });
+  @PostMapping("/login")
+  public SaResult login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
+    return userService
+      .findByUsername(userLoginRequest.username())
+      .map(u -> {
+        if (PasswordUtil.checkPassword(u.getPassword(), userLoginRequest.username(), userLoginRequest.password())) {
+          StpUtil.login(u.getId());
+          SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+          return SaResult.data(tokenInfo);
+        } else {
+          // TODO: use custom exception
+          throw new RuntimeException("密码错误");
         }
+      })
+      // TODO: 返回 404
+      .orElseThrow(() -> {
         // TODO: use custom exception
-        throw new RuntimeException("内部错误");
+        return new RuntimeException("user not found");
+      });
+  }
+
+  @SaCheckLogin
+  @GetMapping("/current")
+  public User getCurrentUser() {
+    System.out.println(StpUtil.getPermissionList());
+    System.out.println(StpUtil.getRoleList());
+    if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
+      Long id = Long.parseLong(sid);
+      return userService
+        .findById(id)
+        // TODO: 返回404
+        .orElseThrow(() -> {
+          // TODO: use custom exception
+          return new RuntimeException("User id does not exist!");
+        });
     }
+    // TODO: use custom exception
+    throw new RuntimeException("内部错误");
+  }
 }

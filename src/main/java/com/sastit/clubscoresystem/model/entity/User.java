@@ -18,25 +18,25 @@ import java.util.Set;
 @Getter
 @Setter
 public class User extends BaseEntity {
-    @Column(nullable = false, unique = true)
-    private String username;
+  @Column(nullable = false, unique = true)
+  private String username;
 
-    @Column(nullable = false)
-    private String password;
+  @Column(nullable = false)
+  private String password;
 
-    @Column(nullable = false)
-    private String realName;
+  @Column(nullable = false)
+  private String realName;
 
-    @OneToMany
-    private Set<Team> teams;
+  @OneToMany
+  private Set<Team> teams;
 
-    private Boolean superAdmin = false;
+  private Boolean superAdmin = false;
 
-    private Boolean admin = false;
+  private Boolean admin = false;
 
-    public static class Role {
-        public static final String SUPER_ADMIN = "super_admin";
-        public static final String ADMIN = "admin";
-        public static final String USER = "user";
-    }
+  public static class Role {
+    public static final String SUPER_ADMIN = "super_admin";
+    public static final String ADMIN = "admin";
+    public static final String USER = "user";
+  }
 }

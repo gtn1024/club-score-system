@@ -19,12 +19,12 @@ import java.util.Set;
 @Getter
 @Setter
 public class Team extends BaseEntity {
-    @Column(nullable = false, unique = true)
-    private String name;
-    @OneToOne
-    private User owner;
-    @OneToMany
-    private Set<User> admins;
-    @OneToMany
-    private Set<User> students;
+  @Column(nullable = false, unique = true)
+  private String name;
+  @OneToOne
+  private User owner;
+  @OneToMany
+  private Set<User> admins;
+  @OneToMany
+  private Set<User> students;
 }
