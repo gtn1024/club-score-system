@@ -38,6 +38,7 @@ public class AuthController {
                     throw new RuntimeException("密码错误");
                 }
             })
+            // TODO: 返回 404
             .orElseThrow(() -> {
                 // TODO: use custom exception
                 return new RuntimeException("user not found");
@@ -46,10 +47,23 @@ public class AuthController {
 
     @GetMapping("/current")
     public User getCurrentUser() {
-        Long id = Long.parseLong((String) StpUtil.getTokenInfo().getLoginId());
-        return userService.findById(id).orElseThrow(() -> {
+        if (!StpUtil.isLogin()) {
             // TODO: use custom exception
-            return new RuntimeException("User id does not exist!");
-        });
+            throw new RuntimeException("未登录");
+        }
+        System.out.println(StpUtil.getPermissionList());
+        System.out.println(StpUtil.getRoleList());
+        if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
+            Long id = Long.parseLong(sid);
+            return userService
+                .findById(id)
+                // TODO: 返回404
+                .orElseThrow(() -> {
+                    // TODO: use custom exception
+                    return new RuntimeException("User id does not exist!");
+                });
+        }
+        // TODO: use custom exception
+        throw new RuntimeException("内部错误");
     }
 }

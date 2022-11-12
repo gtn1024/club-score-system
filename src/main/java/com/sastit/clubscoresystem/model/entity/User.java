@@ -33,4 +33,10 @@ public class User extends BaseEntity {
     private Boolean superAdmin = false;
 
     private Boolean admin = false;
+
+    public static class Role {
+        public static final String SUPER_ADMIN = "super_admin";
+        public static final String ADMIN = "admin";
+        public static final String USER = "user";
+    }
 }

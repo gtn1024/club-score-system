@@ -1,4 +1,4 @@
-package com.sastit.clubscoresystem.config;
+package com.sastit.clubscoresystem.config.security;
 
 import cn.dev33.satoken.jwt.StpLogicJwtForStateless;
 import cn.dev33.satoken.stp.StpLogic;
