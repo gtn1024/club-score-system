@@ -1,5 +1,6 @@
 package com.sastit.clubscoresystem.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
@@ -45,12 +46,9 @@ public class AuthController {
             });
     }
 
+    @SaCheckLogin
     @GetMapping("/current")
     public User getCurrentUser() {
-        if (!StpUtil.isLogin()) {
-            // TODO: use custom exception
-            throw new RuntimeException("未登录");
-        }
         System.out.println(StpUtil.getPermissionList());
         System.out.println(StpUtil.getRoleList());
         if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
