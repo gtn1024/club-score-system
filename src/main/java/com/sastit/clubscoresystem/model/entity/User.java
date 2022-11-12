@@ -31,4 +31,6 @@ public class User extends BaseEntity {
     private Set<Team> teams;
 
     private Boolean superAdmin = false;
+
+    private Boolean admin = false;
 }
