@@ -8,25 +8,23 @@ import org.hibernate.annotations.Where;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name = "t_users")
-@SQLDelete(sql = "UPDATE t_users SET deleted = true WHERE id=?")
+@Table(name = "t_teams")
+@SQLDelete(sql = "UPDATE t_teams SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Getter
 @Setter
-public class User extends BaseEntity {
+public class Team extends BaseEntity {
     @Column(nullable = false, unique = true)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private String realName;
-
+    private String name;
+    @OneToOne
+    private User owner;
     @OneToMany
-    private Set<Team> teams;
+    private Set<User> admins;
+    @OneToMany
+    private Set<User> students;
 }
