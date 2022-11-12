@@ -12,4 +12,6 @@ public interface UserService {
     boolean isUsernameExist(String username);
 
     Optional<User> findByUsername(String username);
+
+    Long count();
 }

@@ -29,4 +29,6 @@ public class User extends BaseEntity {
 
     @OneToMany
     private Set<Team> teams;
+
+    private Boolean superAdmin = false;
 }
