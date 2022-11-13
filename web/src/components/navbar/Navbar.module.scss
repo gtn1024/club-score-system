@@ -1,4 +1,6 @@
 .navbar {
   display: grid;
   grid-template-rows: calc(var(--header-height) - 1px);
+  padding-left: var(--side-padding);
+  padding-right: var(--side-padding);
 }

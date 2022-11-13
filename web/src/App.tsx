@@ -1,6 +1,6 @@
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { RouterView } from "vue-router";
-import { Navbar } from "./components/Navbar";
+import { Navbar } from "./components/navbar/Navbar";
 
 export const App = defineComponent({
   setup() {
