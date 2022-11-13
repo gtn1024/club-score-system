@@ -2,6 +2,7 @@ import { defineComponent } from "vue";
 import { NGi, NGrid } from "naive-ui";
 import style from "./Navbar.module.scss";
 import { Logo } from "./Logo";
+import { User } from "./User";
 
 export const Navbar = defineComponent({
   setup() {
@@ -15,7 +16,7 @@ export const Navbar = defineComponent({
             <div>menu</div>
           </NGi>
           <NGi span={1}>
-            <div>user</div>
+            <User />
           </NGi>
         </NGrid>
       </nav>
