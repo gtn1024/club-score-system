@@ -1,0 +1,23 @@
+.container {
+  height: 100vh;
+  display: flex;
+  --login-container-width: 480px;
+
+  > .content {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: var(--login-container-width);
+    flex: 1;
+    padding-bottom: 40px;
+
+    > .login_form_wrapper {
+      width: var(--login-container-width);
+
+      .btn_login {
+        width: var(--login-container-width);
+      }
+    }
+  }
+}
