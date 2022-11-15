@@ -4,7 +4,6 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import com.sastit.clubscoresystem.model.dto.UserDto;
-import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.model.request.auth.UserLoginRequest;
 import com.sastit.clubscoresystem.model.response.auth.CurrentUserResult;
 import com.sastit.clubscoresystem.model.response.auth.LoginResult;
@@ -53,8 +52,6 @@ public class AuthController {
   @SaCheckLogin
   @GetMapping("/current")
   public ResponseEntity<HttpResponse<CurrentUserResult>> getCurrentUser() {
-    System.out.println(StpUtil.getPermissionList());
-    System.out.println(StpUtil.getRoleList());
     if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
       Long id = Long.parseLong(sid);
       return userService
