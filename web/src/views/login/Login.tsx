@@ -29,7 +29,11 @@ export const Login = defineComponent({
     };
     const onSubmit = (e: MouseEvent) => {
       e.preventDefault();
-      message.success(`登录被点击，账号：${formValue.value.username}，密码：${formValue.value.password}`);
+      rForm.value?.validate((errors) => {
+        if (!errors) {
+          message.success(`登录被点击，账号：${formValue.value.username}，密码：${formValue.value.password}`);
+        }
+      });
     };
     return () => (
       <div class={style.container}>
