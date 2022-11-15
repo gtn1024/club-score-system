@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { getToken } from "./token";
 
 export type HttpResponse<T = unknown> = {
   code: number;
@@ -51,6 +52,14 @@ export class Http {
 }
 
 export const http = new Http("/api");
+http.instance.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    if (!config.headers) config.headers = {};
+    config.headers.tk = token;
+  }
+  return config;
+});
 http.instance.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
     return response;

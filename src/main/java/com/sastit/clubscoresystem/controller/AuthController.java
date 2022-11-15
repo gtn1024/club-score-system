@@ -3,8 +3,10 @@ package com.sastit.clubscoresystem.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.sastit.clubscoresystem.model.dto.UserDto;
 import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.model.request.auth.UserLoginRequest;
+import com.sastit.clubscoresystem.model.response.auth.CurrentUserResult;
 import com.sastit.clubscoresystem.model.response.auth.LoginResult;
 import com.sastit.clubscoresystem.model.response.HttpResponse;
 import com.sastit.clubscoresystem.service.UserService;
@@ -50,13 +52,14 @@ public class AuthController {
 
   @SaCheckLogin
   @GetMapping("/current")
-  public User getCurrentUser() {
+  public ResponseEntity<HttpResponse<CurrentUserResult>> getCurrentUser() {
     System.out.println(StpUtil.getPermissionList());
     System.out.println(StpUtil.getRoleList());
     if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
       Long id = Long.parseLong(sid);
       return userService
         .findById(id)
+        .map(u -> HttpResponse.success(200, "获取成功", new CurrentUserResult(UserDto.userToUserDto(u))))
         // TODO: 返回404
         .orElseThrow(() -> {
           // TODO: use custom exception
