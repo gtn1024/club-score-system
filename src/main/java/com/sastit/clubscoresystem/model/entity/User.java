@@ -38,5 +38,8 @@ public class User extends BaseEntity {
     public static final String SUPER_ADMIN = "super_admin";
     public static final String ADMIN = "admin";
     public static final String USER = "user";
+
+    private Role() {
+    }
   }
 }
