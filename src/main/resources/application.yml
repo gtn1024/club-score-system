@@ -13,10 +13,10 @@ spring:
 # sa-token configuration
 sa-token:
   token-name: tk
-  timeout: 604800
+  timeout: 604800    # 7天
   activity-timeout: -1
   is-concurrent: false
   is-share: false
-  token-style: uuid
-  is-log: true
   jwt-secret-key: ${JWT_SECRET_KEY:9jieWcCw3rxGlSOWc2G76r0PgmKeTUhX}
+  token-session-check-login: false
+  is-read-cookie: false

@@ -3,11 +3,13 @@ package com.sastit.clubscoresystem.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
 import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.model.request.auth.UserLoginRequest;
+import com.sastit.clubscoresystem.model.response.auth.LoginResult;
+import com.sastit.clubscoresystem.model.response.HttpResponse;
 import com.sastit.clubscoresystem.service.UserService;
 import com.sastit.clubscoresystem.shared.PasswordUtil;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,14 +28,14 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public SaResult login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
+  public ResponseEntity<HttpResponse<LoginResult>> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
     return userService
       .findByUsername(userLoginRequest.username())
       .map(u -> {
         if (PasswordUtil.checkPassword(u.getPassword(), userLoginRequest.username(), userLoginRequest.password())) {
           StpUtil.login(u.getId());
           SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-          return SaResult.data(tokenInfo);
+          return HttpResponse.success(200, "Login success", new LoginResult(tokenInfo.getTokenValue()));
         } else {
           // TODO: use custom exception
           throw new RuntimeException("密码错误");

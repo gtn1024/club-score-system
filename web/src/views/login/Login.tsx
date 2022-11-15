@@ -1,14 +1,22 @@
 import { defineComponent, ref } from "vue";
 import { FormInst, FormRules, NButton, NForm, NFormItem, NInput, useMessage } from "naive-ui";
 import style from "./Login.module.scss";
+import { http } from "../../shared/Http";
+import { setToken } from "../../shared/token";
+import { useRouter } from "vue-router";
 
 type LoginParams = {
   username: string;
   password: string;
 };
 
+type LoginResult = {
+  token: string;
+};
+
 export const Login = defineComponent({
   setup() {
+    const router = useRouter();
     const message = useMessage();
     const rForm = ref<FormInst | null>(null);
     const formValue = ref<LoginParams>({
@@ -31,7 +39,18 @@ export const Login = defineComponent({
       e.preventDefault();
       rForm.value?.validate((errors) => {
         if (!errors) {
-          message.success(`登录被点击，账号：${formValue.value.username}，密码：${formValue.value.password}`);
+          http
+            .post<LoginResult>("/auth/login", formValue.value)
+            .then((res) => {
+              const data = res.data.data;
+              const token = data.token;
+              setToken(token);
+              message.success("登录成功！");
+              router.push("/");
+            })
+            .catch((err) => {
+              message.error(err.response.data.message);
+            });
         }
       });
     };

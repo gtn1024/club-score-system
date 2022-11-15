@@ -1,4 +1,10 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+
+export type HttpResponse<T = unknown> = {
+  code: number;
+  message: string;
+  data: T;
+};
 
 type JSONValue = string | number | null | boolean | JSONValue[] | { [key: string]: JSONValue };
 
@@ -16,7 +22,7 @@ export class Http {
     query?: Record<string, string>,
     config?: Omit<AxiosRequestConfig, "url" | "params" | "method">
   ) {
-    return this.instance.request<R>({ url, params: query, method: "GET", ...config });
+    return this.instance.request<HttpResponse<R>>({ url, params: query, method: "GET", ...config });
   }
 
   post<R = unknown>(
@@ -24,7 +30,7 @@ export class Http {
     data?: Record<string, JSONValue>,
     config?: Omit<AxiosRequestConfig, "url" | "data" | "method">
   ) {
-    return this.instance.request<R>({ url, data, method: "POST", ...config });
+    return this.instance.request<HttpResponse<R>>({ url, data, method: "POST", ...config });
   }
 
   patch<R = unknown>(
@@ -32,7 +38,7 @@ export class Http {
     data?: Record<string, JSONValue>,
     config?: Omit<AxiosRequestConfig, "url" | "data" | "method">
   ) {
-    return this.instance.request<R>({ url, data, method: "PATCH", ...config });
+    return this.instance.request<HttpResponse<R>>({ url, data, method: "PATCH", ...config });
   }
 
   delete<R = unknown>(
@@ -40,20 +46,22 @@ export class Http {
     query?: Record<string, string>,
     config?: Omit<AxiosRequestConfig, "url" | "params" | "method">
   ) {
-    return this.instance.request<R>({ url, params: query, method: "DELETE", ...config });
+    return this.instance.request<HttpResponse<R>>({ url, params: query, method: "DELETE", ...config });
   }
 }
 
 export const http = new Http("/api");
-// http.instance.interceptors.response.use(response => {
-//   console.log('response')
-//   return response
-// }, error => {
-//   if (error.response) {
-//     const axiosError = error as AxiosError
-//     if (axiosError.response?.status === 429) {
-//       alert('你太频繁了')
-//     }
-//   }
-//   throw error
-// })
+http.instance.interceptors.response.use(
+  (response: AxiosResponse<HttpResponse>) => {
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response?.status === 429) {
+        alert("你太频繁了");
+      }
+    }
+    throw error;
+  }
+);
