@@ -1,6 +1,6 @@
 package com.sastit.clubscoresystem.exception;
 
-public abstract class BaseException extends Exception {
+public abstract class BaseException extends RuntimeException {
   private final Integer code;
 
   protected BaseException(Integer code, String message) {

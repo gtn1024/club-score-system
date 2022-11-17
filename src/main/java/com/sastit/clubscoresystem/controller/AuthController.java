@@ -3,10 +3,10 @@ package com.sastit.clubscoresystem.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.sastit.clubscoresystem.exception.auth.LoginException;
 import com.sastit.clubscoresystem.model.dto.UserDto;
+import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.model.request.auth.UserLoginRequest;
-import com.sastit.clubscoresystem.model.response.auth.CurrentUserResult;
-import com.sastit.clubscoresystem.model.response.auth.LoginResult;
 import com.sastit.clubscoresystem.model.response.HttpResponse;
 import com.sastit.clubscoresystem.service.UserService;
 import com.sastit.clubscoresystem.shared.PasswordUtil;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -29,41 +30,32 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<HttpResponse<LoginResult>> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
-    return userService
-      .findByUsername(userLoginRequest.username())
-      .map(u -> {
-        if (PasswordUtil.checkPassword(u.getPassword(), userLoginRequest.username(), userLoginRequest.password())) {
-          StpUtil.login(u.getId());
-          SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-          return HttpResponse.success(200, "Login success", new LoginResult(tokenInfo.getTokenValue()));
-        } else {
-          // TODO: use custom exception
-          throw new RuntimeException("密码错误");
-        }
-      })
-      // TODO: 返回 404
-      .orElseThrow(() -> {
-        // TODO: use custom exception
-        return new RuntimeException("user not found");
-      });
+  public ResponseEntity<HttpResponse<String>> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
+    Optional<User> user = userService.findByUsername(userLoginRequest.username());
+    if (user.isEmpty()) {
+      throw new LoginException(401, "用户不存在");
+    } else {
+      User u = user.get();
+      if (PasswordUtil.checkPassword(u.getPassword(), userLoginRequest.username(), userLoginRequest.password())) {
+        StpUtil.login(u.getId());
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+        return HttpResponse.success(200, "登录成功", tokenInfo.getTokenValue());
+      } else {
+        throw new LoginException(401, "密码错误");
+      }
+    }
   }
 
   @SaCheckLogin
   @GetMapping("/current")
-  public ResponseEntity<HttpResponse<CurrentUserResult>> getCurrentUser() {
+  public ResponseEntity<HttpResponse<UserDto>> getCurrentUser() {
     if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
       Long id = Long.parseLong(sid);
       return userService
         .findById(id)
-        .map(u -> HttpResponse.success(200, "获取成功", new CurrentUserResult(UserDto.userToUserDto(u))))
-        // TODO: 返回404
-        .orElseThrow(() -> {
-          // TODO: use custom exception
-          return new RuntimeException("User id does not exist!");
-        });
+        .map(u -> HttpResponse.success(200, "获取成功", UserDto.userToUserDto(u)))
+        .orElseThrow(() -> new LoginException(401, "用户不存在"));
     }
-    // TODO: use custom exception
     throw new RuntimeException("内部错误");
   }
 }

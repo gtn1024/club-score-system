@@ -10,10 +10,6 @@ type LoginParams = {
   password: string;
 };
 
-type LoginResult = {
-  token: string;
-};
-
 export const Login = defineComponent({
   setup() {
     const router = useRouter();
@@ -40,10 +36,9 @@ export const Login = defineComponent({
       rForm.value?.validate((errors) => {
         if (!errors) {
           http
-            .post<LoginResult>("/auth/login", formValue.value)
+            .post<string>("/auth/login", formValue.value)
             .then((res) => {
-              const data = res.data.data;
-              const token = data.token;
+              const token = res.data.data;
               setToken(token);
               message.success("登录成功！");
               router.push("/");
