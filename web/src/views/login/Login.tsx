@@ -1,17 +1,12 @@
 import { defineComponent, ref } from "vue";
 import { FormInst, FormRules, NButton, NForm, NFormItem, NInput, useMessage } from "naive-ui";
 import style from "./Login.module.scss";
-import { http } from "../../shared/Http";
-import { setToken } from "../../shared/token";
 import { useRouter } from "vue-router";
-
-type LoginParams = {
-  username: string;
-  password: string;
-};
+import { LoginParams, useUserStore } from "../../store/user";
 
 export const Login = defineComponent({
   setup() {
+    const userStore = useUserStore();
     const router = useRouter();
     const message = useMessage();
     const rForm = ref<FormInst | null>(null);
@@ -35,11 +30,9 @@ export const Login = defineComponent({
       e.preventDefault();
       rForm.value?.validate((errors) => {
         if (!errors) {
-          http
-            .post<string>("/auth/login", formValue.value)
-            .then((res) => {
-              const token = res.data.data;
-              setToken(token);
+          userStore
+            .login(formValue.value)
+            .then(() => {
               message.success("登录成功！");
               router.push("/");
             })

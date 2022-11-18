@@ -1,14 +1,12 @@
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { User } from "../shared/api/user";
 import { http } from "../shared/Http";
+import { UserState, useUserStore } from "../store/user";
 
 export const Welcome = defineComponent({
   setup() {
-    const u = ref<string | null>(null);
-    http.get<User>("/auth/current").then((res) => {
-      const user = res.data.data;
-      u.value = user.realName;
-    });
-    return () => <>Hello {u.value ? u.value : "World"}</>;
+    const userStore = useUserStore();
+    const realName = computed(() => userStore.realName);
+    return () => <>Hello {realName.value ? realName.value : "World"}</>;
   },
 });
