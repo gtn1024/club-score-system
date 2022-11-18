@@ -9,6 +9,8 @@ public interface UserService {
 
   User newUser(User user);
 
+  User updateUser(User user);
+
   boolean isUsernameExist(String username);
 
   Optional<User> findByUsername(String username);

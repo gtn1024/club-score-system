@@ -30,6 +30,9 @@ public class User extends BaseEntity {
   @OneToMany
   private Set<Team> teams;
 
+  @OneToMany
+  private Set<Team> ownTeams = Set.of();
+
   private Boolean superAdmin = false;
 
   private Boolean admin = false;

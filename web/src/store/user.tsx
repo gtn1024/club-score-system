@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
-import { useRouter } from "vue-router";
-import { User } from "../shared/api/user";
 import { http } from "../shared/Http";
 import { clearToken, setToken } from "../shared/token";
+import { Model } from "../shared/types/models";
 
 export type UserState = {
   id?: number;
@@ -60,7 +59,7 @@ export const useUserStore = defineStore("user", {
     },
     async info() {
       await http
-        .get<User>("/auth/current")
+        .get<Model.User>("/auth/current")
         .then((res) => {
           const data = res.data.data;
           this.setInfo(data);

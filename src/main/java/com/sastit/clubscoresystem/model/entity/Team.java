@@ -24,7 +24,7 @@ public class Team extends BaseEntity {
   @OneToOne
   private User owner;
   @OneToMany
-  private Set<User> admins;
+  private Set<User> admins = Set.of();
   @OneToMany
-  private Set<User> students;
+  private Set<User> students = Set.of();
 }
