@@ -1,6 +1,11 @@
 .user {
   display: flex;
-  justify-content: right;
   height: var(--header-height);
+  justify-content: right;
   text-align: center;
+  align-items: center;
+}
+
+.btn {
+  padding: 4px;
 }
