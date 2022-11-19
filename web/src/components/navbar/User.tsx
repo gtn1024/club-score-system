@@ -15,11 +15,17 @@ export const User = defineComponent({
       userStore.logout();
       router.push({ name: "login" });
     };
+    const adminBtnOnClick = () => {};
     return () => (
       <div class={style.user}>
         {userStore.id ? (
           <>
             <span>{userStore.username}</span>
+            {userStore.superAdmin || userStore.admin ? (
+              <NButton class={style.btn} text onClick={adminBtnOnClick}>
+                管理后台
+              </NButton>
+            ) : null}
             <NButton class={style.btn} text onClick={logoutBtnOnClick}>
               注销
             </NButton>
