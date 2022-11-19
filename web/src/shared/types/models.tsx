@@ -6,4 +6,11 @@ export namespace Model {
     superAdmin: boolean;
     admin: boolean;
   };
+  export type Team = {
+    id: number;
+    name: string;
+    owner: User;
+    admins: User[];
+    students: User[];
+  };
 }

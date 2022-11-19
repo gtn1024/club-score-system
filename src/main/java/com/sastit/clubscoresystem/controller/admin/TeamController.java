@@ -8,6 +8,7 @@ import com.sastit.clubscoresystem.model.dto.TeamDto;
 import com.sastit.clubscoresystem.model.entity.Team;
 import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.model.request.team.NewTeamRequest;
+import com.sastit.clubscoresystem.model.response.AdminTeamResponse;
 import com.sastit.clubscoresystem.model.response.HttpResponse;
 import com.sastit.clubscoresystem.service.TeamService;
 import com.sastit.clubscoresystem.service.UserService;
@@ -59,8 +60,10 @@ public class TeamController {
 
   @GetMapping
   @SaCheckRole(value = {User.Role.SUPER_ADMIN, User.Role.ADMIN}, mode = SaMode.OR)
-  public ResponseEntity<HttpResponse<Collection<TeamDto>>> getTeams(
-    @RequestParam(required = false, defaultValue = "false") boolean mine
+  public ResponseEntity<HttpResponse<AdminTeamResponse>> getTeams(
+    @RequestParam(required = false, defaultValue = "") String name,
+    @RequestParam(required = false, defaultValue = "false") boolean mine,
+    @RequestParam(required = false, defaultValue = "20") Integer pageSize
   ) {
     List<String> roles = StpUtil.getRoleList();
     if (mine || !roles.contains(User.Role.SUPER_ADMIN)) {
@@ -70,11 +73,17 @@ public class TeamController {
         user = userService.findById(id).orElseThrow(() -> new LoginException(401, "用户不存在"));
       }
       return HttpResponse.success(200, "获取成功",
-        teamService.getAllTeams(user).stream().map(TeamDto::teamToTeamDto).toList()
+        new AdminTeamResponse(
+          20L,  // TODO: get total count
+          teamService.getAllTeams(name, user, pageSize).stream().map(TeamDto::teamToTeamDto).toList()
+        )
       );
     }
     return HttpResponse.success(200, "获取成功",
-      teamService.getAllTeams().stream().map(TeamDto::teamToTeamDto).toList()
+      new AdminTeamResponse(
+        25L,  // TODO: get total count
+        teamService.getAllTeams(name, pageSize).stream().limit(pageSize).map(TeamDto::teamToTeamDto).toList()
+      )
     );
   }
 }

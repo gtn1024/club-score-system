@@ -27,12 +27,18 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public Collection<Team> getAllTeams() {
+  public Collection<Team> getAllTeams(String name, Integer pageSize) {
+    if (name.isEmpty()) {
+      // TODO: 筛选
+    }
     return teamRepository.findAll();
   }
 
   @Override
-  public Collection<Team> getAllTeams(User user) {
+  public Collection<Team> getAllTeams(String name, User user, Integer pageSize) {
+    if (name.isEmpty()) {
+      // TODO: 筛选
+    }
     return teamRepository.findAllByOwnerOrAdminsContains(user, user);
   }
 }
