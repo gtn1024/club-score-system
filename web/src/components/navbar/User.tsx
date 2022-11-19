@@ -15,7 +15,9 @@ export const User = defineComponent({
       userStore.logout();
       router.push({ name: "login" });
     };
-    const adminBtnOnClick = () => {};
+    const adminBtnOnClick = () => {
+      router.push({ name: "admin" });
+    };
     return () => (
       <div class={style.user}>
         {userStore.id ? (
