@@ -1,4 +1,4 @@
-import { mergeConfig } from "vite";
+import { mergeConfig, UserConfigExport } from "vite";
 import baseConfig from "./vite.config.base";
 
 export default mergeConfig(
@@ -17,6 +17,6 @@ export default mergeConfig(
         },
       },
     },
-  },
+  } as UserConfigExport,
   baseConfig
 );
