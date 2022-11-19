@@ -1,9 +1,12 @@
 package com.sastit.clubscoresystem.service.impl;
 
 import com.sastit.clubscoresystem.model.entity.Team;
+import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.repository.TeamRepository;
 import com.sastit.clubscoresystem.service.TeamService;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 @Service
 public class TeamServiceImpl implements TeamService {
@@ -21,5 +24,15 @@ public class TeamServiceImpl implements TeamService {
   @Override
   public boolean isTeamExistByName(String teamName) {
     return teamRepository.existsByName(teamName);
+  }
+
+  @Override
+  public Collection<Team> getAllTeams() {
+    return teamRepository.findAll();
+  }
+
+  @Override
+  public Collection<Team> getAllTeams(User user) {
+    return teamRepository.findAllByOwnerOrAdminsContains(user, user);
   }
 }
