@@ -1,5 +1,5 @@
-import { defineComponent, ref } from "vue";
-import { FormInst, FormRules, NButton, NForm, NFormItem, NInput, useMessage } from "naive-ui";
+import { computed, defineComponent, ref } from "vue";
+import { FormInst, FormRules, NButton, NForm, NFormItem, NInput, useMessage, useNotification } from "naive-ui";
 import style from "./Login.module.scss";
 import { useRouter } from "vue-router";
 import { LoginParams, useUserStore } from "../../store/user";
@@ -9,6 +9,7 @@ export const Login = defineComponent({
     const userStore = useUserStore();
     const router = useRouter();
     const message = useMessage();
+    const notification = useNotification();
     const rForm = ref<FormInst | null>(null);
     const formValue = ref<LoginParams>({
       username: "",
@@ -33,7 +34,13 @@ export const Login = defineComponent({
           userStore
             .login(formValue.value)
             .then(() => {
-              message.success("登录成功！");
+              setTimeout(() => {
+                notification.success({
+                  title: "登录成功",
+                  content: `欢迎回来，${computed(() => userStore.userInfo.realName).value}`,
+                  duration: 2000,
+                });
+              }, 100);
               router.push("/");
             })
             .catch((err) => {
