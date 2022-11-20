@@ -6,8 +6,11 @@ import com.sastit.clubscoresystem.model.response.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.Objects;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -16,6 +19,11 @@ public class ExceptionHandlerController {
   @ExceptionHandler(NotLoginException.class)
   public ResponseEntity<HttpResponse<Void>> handleSaTokenNotLoginException(NotLoginException e) {
     return HttpResponse.fail(401, "未登录");
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<HttpResponse<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    return HttpResponse.fail(400, Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
   }
 
   @ExceptionHandler(BaseException.class)

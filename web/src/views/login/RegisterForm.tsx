@@ -32,11 +32,18 @@ export const RegisterForm = defineComponent({
         message: "请输入用户名",
         trigger: "blur",
       },
-      password: {
-        required: true,
-        message: "请输入密码",
-        trigger: "blur",
-      },
+      password: [
+        {
+          required: true,
+          message: "请输入密码",
+          trigger: "blur",
+        },
+        {
+          min: 8,
+          message: "密码长度至少为8位",
+          trigger: ["blur", "input"],
+        },
+      ],
       password2: [
         {
           required: true,
