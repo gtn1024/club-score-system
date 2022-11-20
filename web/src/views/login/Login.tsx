@@ -2,6 +2,7 @@ import { defineComponent } from "vue";
 import { NCard, NTabPane, NTabs } from "naive-ui";
 import style from "./Login.module.scss";
 import { LoginForm } from "./LoginForm";
+import { RegisterForm } from "./RegisterForm";
 
 export const Login = defineComponent({
   setup() {
@@ -14,6 +15,7 @@ export const Login = defineComponent({
                 <LoginForm />
               </NTabPane>
               <NTabPane name="register" tab="注册">
+                <RegisterForm />
               </NTabPane>
             </NTabs>
           </NCard>

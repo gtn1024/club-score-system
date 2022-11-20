@@ -1,6 +1,7 @@
 package com.sastit.clubscoresystem.config.security;
 
 import cn.dev33.satoken.stp.StpInterface;
+import com.sastit.clubscoresystem.exception.auth.LoginException;
 import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.service.UserService;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,6 @@ public class StpInterfaceImpl implements StpInterface {
 
   @Override
   public List<String> getPermissionList(Object loginId, String loginType) {
-    // TODO: implement this method
     return List.of();
   }
 
@@ -32,10 +32,7 @@ public class StpInterfaceImpl implements StpInterface {
         if (u.getAdmin()) roles.add(User.Role.ADMIN);
         if (u.getSuperAdmin()) roles.add(User.Role.SUPER_ADMIN);
         return roles;
-      }).orElseThrow(() -> {
-        // TODO: use custom exception
-        return new RuntimeException("user not found");
-      });
+      }).orElseThrow(() -> new LoginException(401, "用户不存在"));
     }
     // TODO: use custom exception
     throw new RuntimeException("内部错误");

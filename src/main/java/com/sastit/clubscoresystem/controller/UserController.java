@@ -1,5 +1,6 @@
 package com.sastit.clubscoresystem.controller;
 
+import com.sastit.clubscoresystem.exception.user.UserException;
 import com.sastit.clubscoresystem.model.dto.UserDto;
 import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.model.request.user.NewUserRequest;
@@ -26,8 +27,7 @@ public class UserController {
   @PostMapping
   public ResponseEntity<HttpResponse<UserDto>> newUser(@Valid @RequestBody NewUserRequest request) {
     if (userService.isUsernameExist(request.username())) {
-      // TODO: use custom exception
-      throw new RuntimeException("Username already exist");
+      throw new UserException(409, "用户已存在");
     }
     User user = new User();
     user.setUsername(request.username());
