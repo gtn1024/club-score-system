@@ -137,8 +137,8 @@ export const Team = defineComponent({
     });
     const onSubmit = (e: MouseEvent) => {
       e.preventDefault();
+      loadingRef.value = true;
       getTeams(formValue.value).then((data) => {
-        loadingRef.value = true;
         setDataToTable(data.total, data.data);
         loadingRef.value = false;
       });
