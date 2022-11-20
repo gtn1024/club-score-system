@@ -1,11 +1,12 @@
 import { defineComponent } from "vue";
 import style from "./User.module.scss";
-import { NButton } from "naive-ui";
+import { NButton, useMessage } from "naive-ui";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../../store/user";
 
 export const User = defineComponent({
   setup() {
+    const message = useMessage();
     const router = useRouter();
     const userStore = useUserStore();
     const loginBtnOnClick = () => {
@@ -14,6 +15,7 @@ export const User = defineComponent({
     const logoutBtnOnClick = () => {
       userStore.logout();
       router.push({ name: "login" });
+      message.info("退出登录成功");
     };
     const adminBtnOnClick = () => {
       router.push({ name: "admin" });
