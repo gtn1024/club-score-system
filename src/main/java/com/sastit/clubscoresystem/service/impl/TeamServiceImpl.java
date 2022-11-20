@@ -4,6 +4,7 @@ import com.sastit.clubscoresystem.model.entity.Team;
 import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.repository.TeamRepository;
 import com.sastit.clubscoresystem.service.TeamService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -27,18 +28,20 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public Collection<Team> getAllTeams(String name, Integer pageSize) {
-    if (name.isEmpty()) {
-      // TODO: 筛选
+  public Collection<Team> getAllTeams(String name, User user, Integer pageSize, Integer currentPage) {
+    if (user == null) {
+      return teamRepository.findAllByNameContaining(name, PageRequest.of(currentPage - 1, pageSize));
     }
-    return teamRepository.findAll();
+    return teamRepository
+      .findAllByNameContainingAndOwnerOrAdminsContains(name, user, user, PageRequest.of(currentPage - 1, pageSize));
   }
 
   @Override
-  public Collection<Team> getAllTeams(String name, User user, Integer pageSize) {
-    if (name.isEmpty()) {
-      // TODO: 筛选
+  public Long countAllTeams(String name, User user, Integer pageSize, Integer currentPage) {
+    if (user == null) {
+      return teamRepository.countAllByNameContaining(name, PageRequest.of(currentPage - 1, pageSize));
     }
-    return teamRepository.findAllByOwnerOrAdminsContains(user, user);
+    return teamRepository
+      .countAllByNameContainingAndOwnerOrAdminsContains(name, user, user, PageRequest.of(currentPage - 1, pageSize));
   }
 }

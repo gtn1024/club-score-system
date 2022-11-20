@@ -1,5 +1,16 @@
-import { FormInst, NButton, NCard, NCheckbox, NDataTable, NForm, NFormItem, NH2, NInput } from "naive-ui";
-import { InternalRowData, TableColumns } from "naive-ui/es/data-table/src/interface";
+import {
+  DataTableColumns,
+  FormInst,
+  NButton,
+  NCard,
+  NCheckbox,
+  NDataTable,
+  NForm,
+  NFormItem,
+  NH2,
+  NInput,
+  useMessage,
+} from "naive-ui";
 import { defineComponent, onMounted, reactive, ref } from "vue";
 import { http } from "../../shared/Http";
 import { Model } from "../../shared/types/models";
@@ -14,6 +25,7 @@ const getTeams: (form: TeamForm) => Promise<Response> = async (form: TeamForm) =
     name: form.name,
     mine: form.mine ? "true" : "false",
     pageSize: form.pageSize + "",
+    currentPage: form.currentPage + "",
   });
   return res.data.data;
 };
@@ -22,18 +34,32 @@ type TeamForm = {
   name: string;
   mine: boolean;
   pageSize: number;
+  currentPage: number;
 };
 
 export const Team = defineComponent({
   setup() {
+    const message = useMessage();
     const rForm = ref<FormInst | null>(null);
     const formValue = ref<TeamForm>({
       name: "",
       mine: false,
       pageSize: 20,
+      currentPage: 1,
     });
-
-    const columns: TableColumns = [
+    const teamAdminBtnOnClick = (row: Model.Team) => {
+      message.info(`查看 ${row.name} 的管理员`);
+    };
+    const studentsBtnOnClick = (row: Model.Team) => {
+      message.info(`查看 ${row.name} 的小朋友`);
+    };
+    const createColumns = ({
+      showAdmins,
+      showStudents,
+    }: {
+      showAdmins: (row: Model.Team) => void;
+      showStudents: (row: Model.Team) => void;
+    }): DataTableColumns<Model.Team> => [
       {
         title: "ID",
         key: "id",
@@ -52,10 +78,10 @@ export const Team = defineComponent({
         render(row) {
           return (
             <>
-              <NButton size="small" style="margin: 2px">
+              <NButton size="small" style="margin: 2px" onClick={() => showAdmins(row)}>
                 查看管理员
               </NButton>
-              <NButton size="small" style="margin: 2px">
+              <NButton size="small" style="margin: 2px" onClick={() => showStudents(row)}>
                 查看学生
               </NButton>
             </>
@@ -67,8 +93,28 @@ export const Team = defineComponent({
     const paginationReactive = reactive({
       page: 1,
       pageCount: 1,
+      showSizePicker: true,
       pageSize: 20,
-      itemCount: 0,
+      pageSizes: [20, 50, 100],
+      onChange: (page: number) => {
+        paginationReactive.page = page;
+      },
+      onUpdatePageSize: (pageSize: number) => {
+        paginationReactive.pageSize = pageSize;
+        paginationReactive.page = 1;
+        if (!loadingRef.value) {
+          loadingRef.value = true;
+          getTeams({
+            name: formValue.value.name,
+            mine: formValue.value.mine,
+            pageSize: paginationReactive.pageSize,
+            currentPage: paginationReactive.page,
+          }).then((data) => {
+            setDataToTable(data.total, data.data);
+            loadingRef.value = false;
+          });
+        }
+      },
       prefix({ itemCount }) {
         return `Total is ${itemCount}.`;
       },
@@ -83,6 +129,7 @@ export const Team = defineComponent({
         name: "",
         mine: false,
         pageSize: 20,
+        currentPage: 1,
       }).then((data) => {
         setDataToTable(data.total, data.data);
         loadingRef.value = false;
@@ -96,10 +143,24 @@ export const Team = defineComponent({
         loadingRef.value = false;
       });
     };
+    const handlePageChange = (currentPage: number) => {
+      if (!loadingRef.value) {
+        loadingRef.value = true;
+        getTeams({
+          name: formValue.value.name,
+          mine: formValue.value.mine,
+          pageSize: paginationReactive.pageSize,
+          currentPage: currentPage,
+        }).then((data) => {
+          setDataToTable(data.total, data.data);
+          loadingRef.value = false;
+        });
+      }
+    };
     return () => (
       <>
         <NH2>团队列表</NH2>
-        <NCard size="medium">
+        <NCard size="medium" style="margin: 4px">
           <NForm ref="rForm" inline labelWidth={80} model={formValue.value} showLabel={false}>
             <NFormItem label="名称" path="name">
               <NInput v-model={[formValue.value.name, "value"]} placeholder="输入名称" />
@@ -117,10 +178,12 @@ export const Team = defineComponent({
         <NDataTable
           remote
           bordered
-          columns={columns}
+          columns={createColumns({ showAdmins: teamAdminBtnOnClick, showStudents: studentsBtnOnClick })}
           loading={loadingRef.value}
           data={dataRef.value}
           pagination={paginationReactive}
+          onUpdatePage={handlePageChange}
+          style="margin: 4px"
         />
       </>
     );

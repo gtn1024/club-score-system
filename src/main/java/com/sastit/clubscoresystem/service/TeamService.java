@@ -10,7 +10,7 @@ public interface TeamService {
 
   boolean isTeamExistByName(String teamName);
 
-  Collection<Team> getAllTeams(String name, Integer pageSize);
+  Collection<Team> getAllTeams(String name, User user, Integer pageSize, Integer currentPage);
 
-  Collection<Team> getAllTeams(String name, User user, Integer pageSize);
+  Long countAllTeams(String name, User user, Integer pageSize, Integer currentPage);
 }

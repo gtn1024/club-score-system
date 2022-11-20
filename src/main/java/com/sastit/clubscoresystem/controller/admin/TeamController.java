@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -63,26 +62,21 @@ public class TeamController {
   public ResponseEntity<HttpResponse<AdminTeamResponse>> getTeams(
     @RequestParam(required = false, defaultValue = "") String name,
     @RequestParam(required = false, defaultValue = "false") boolean mine,
-    @RequestParam(required = false, defaultValue = "20") Integer pageSize
+    @RequestParam(required = false, defaultValue = "20") Integer pageSize,
+    @RequestParam(required = false, defaultValue = "1") Integer currentPage
   ) {
     List<String> roles = StpUtil.getRoleList();
+    User user = null;
     if (mine || !roles.contains(User.Role.SUPER_ADMIN)) {
-      User user = null;
       if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
         Long id = Long.parseLong(sid);
         user = userService.findById(id).orElseThrow(() -> new LoginException(401, "用户不存在"));
       }
-      return HttpResponse.success(200, "获取成功",
-        new AdminTeamResponse(
-          20L,  // TODO: get total count
-          teamService.getAllTeams(name, user, pageSize).stream().map(TeamDto::teamToTeamDto).toList()
-        )
-      );
     }
     return HttpResponse.success(200, "获取成功",
       new AdminTeamResponse(
-        25L,  // TODO: get total count
-        teamService.getAllTeams(name, pageSize).stream().limit(pageSize).map(TeamDto::teamToTeamDto).toList()
+        teamService.countAllTeams(name, user, pageSize, currentPage),
+        teamService.getAllTeams(name, user, pageSize, currentPage).stream().map(TeamDto::teamToTeamDto).toList()
       )
     );
   }
