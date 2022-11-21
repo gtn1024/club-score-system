@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService {
   public Collection<User> getAllUsers(String username, Integer pageSize, Integer currentPage) {
     return userRepository.findAllByUsernameContaining(username, PageRequest.of(currentPage - 1, pageSize));
   }
+
+  @Override
+  public void deleteUser(Long id) {
+    userRepository.deleteById(id);
+  }
 }

@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import {
   DataTableColumns,
   FormInst,
@@ -8,10 +9,11 @@ import {
   NFormItem,
   NH2,
   NInput,
+  NPopconfirm,
   useMessage,
 } from "naive-ui";
 import { defineComponent, onMounted, reactive, ref } from "vue";
-import { http } from "../../shared/Http";
+import { http, HttpResponse } from "../../shared/Http";
 import { Model } from "../../shared/types/models";
 
 type Response = {
@@ -46,7 +48,26 @@ export const AdminUser = defineComponent({
     const modifyUserBtnOnClick = (row: Model.User) => {
       message.info(`修改 ${row.username} 数据`);
     };
-    const createColumns = ({ modifyUser }: { modifyUser: (row: Model.User) => void }): DataTableColumns<Model.User> => [
+    const deleteUserBtnOnClick = (row: Model.User) => {
+      http
+        .delete<void>(`/admin/user/${row.id}`)
+        .then((res) => {
+          message.success(`删除 ${row.username} 成功`);
+          handlePageChange(1);
+        })
+        .catch((err) => {
+          if (err instanceof AxiosError<HttpResponse<void>>) {
+            message.error(err.response?.data.message);
+          }
+        });
+    };
+    const createColumns = ({
+      modifyUser,
+      deleteUser,
+    }: {
+      modifyUser: (row: Model.User) => void;
+      deleteUser: (row: Model.User) => void;
+    }): DataTableColumns<Model.User> => [
       {
         title: "ID",
         key: "id",
@@ -82,6 +103,16 @@ export const AdminUser = defineComponent({
               <NButton size="small" style="margin: 2px" onClick={() => modifyUser(row)}>
                 修改
               </NButton>
+              <NPopconfirm onPositiveClick={() => deleteUser(row)}>
+                {{
+                  trigger: () => (
+                    <NButton size="small" style="margin: 2px">
+                      删除
+                    </NButton>
+                  ),
+                  default: () => "确定删除吗？",
+                }}
+              </NPopconfirm>
             </>
           );
         },
@@ -170,7 +201,7 @@ export const AdminUser = defineComponent({
         <NDataTable
           remote
           bordered
-          columns={createColumns({ modifyUser: modifyUserBtnOnClick })}
+          columns={createColumns({ modifyUser: modifyUserBtnOnClick, deleteUser: deleteUserBtnOnClick })}
           loading={loadingRef.value}
           data={dataRef.value}
           pagination={paginationReactive}

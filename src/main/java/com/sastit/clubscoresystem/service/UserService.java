@@ -21,4 +21,6 @@ public interface UserService {
   Long countAllUsers(String username, Integer pageSize, Integer currentPage);
 
   Collection<User> getAllUsers(String username, Integer pageSize, Integer currentPage);
+
+  void deleteUser(Long id);
 }
