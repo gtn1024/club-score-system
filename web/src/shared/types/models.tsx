@@ -11,6 +11,5 @@ export namespace Model {
     name: string;
     owner: User;
     admins: User[];
-    students: User[];
   };
 }

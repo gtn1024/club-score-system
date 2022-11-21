@@ -8,16 +8,14 @@ public record TeamDto(
   Long id,
   String name,
   UserDto owner,
-  Collection<UserDto> admins,
-  Collection<UserDto> students
+  Collection<UserDto> admins
 ) {
   public static TeamDto teamToTeamDto(Team team) {
     return new TeamDto(
       team.getId(),
       team.getName(),
       UserDto.userToUserDto(team.getOwner()),
-      UserDto.usersToUserDtos(team.getAdmins()),
-      UserDto.usersToUserDtos(team.getStudents())
+      UserDto.usersToUserDtos(team.getAdmins())
     );
   }
 }
