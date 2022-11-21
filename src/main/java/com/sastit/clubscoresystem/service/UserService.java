@@ -2,6 +2,7 @@ package com.sastit.clubscoresystem.service;
 
 import com.sastit.clubscoresystem.model.entity.User;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface UserService {
@@ -16,4 +17,8 @@ public interface UserService {
   Optional<User> findByUsername(String username);
 
   Long count();
+
+  Long countAllUsers(String username, Integer pageSize, Integer currentPage);
+
+  Collection<User> getAllUsers(String username, Integer pageSize, Integer currentPage);
 }

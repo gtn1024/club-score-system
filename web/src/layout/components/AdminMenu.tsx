@@ -16,6 +16,11 @@ export const AdminMenu = defineComponent({
           key: "go-to-team",
           show: isAdmin.value || isSuperAdmin.value,
         },
+        {
+          label: () => <RouterLink to={{ name: "admin-user" }}>用户管理</RouterLink>,
+          key: "go-to-user",
+          show: isAdmin.value || isSuperAdmin.value,
+        },
       ] as MenuMixedOption[];
     });
     return () => (
