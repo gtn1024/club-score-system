@@ -1,6 +1,7 @@
-import { NLayout, NLayoutSider } from "naive-ui";
+import { NLayout, NLayoutFooter, NLayoutSider } from "naive-ui";
 import { defineComponent } from "vue";
 import { RouterView } from "vue-router";
+import { Footer } from "../components/footer/Footer";
 import { AdminMenu } from "./components/AdminMenu";
 
 export const AdminLayout = defineComponent({
@@ -15,6 +16,9 @@ export const AdminLayout = defineComponent({
             <RouterView />
           </NLayout>
         </NLayout>
+        <NLayoutFooter bordered position="absolute" style="height: 64px">
+          <Footer />
+        </NLayoutFooter>
       </>
     );
   },

@@ -23,6 +23,7 @@ public class Team extends BaseEntity {
   private String name;
   @OneToOne
   private User owner;
+  private String picture;
   @OneToMany
   private Set<User> admins = Set.of();
   @OneToMany

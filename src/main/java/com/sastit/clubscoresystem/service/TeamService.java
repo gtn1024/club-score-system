@@ -12,5 +12,7 @@ public interface TeamService {
 
   Collection<Team> getAllTeams(String name, User user, Integer pageSize, Integer currentPage);
 
+  Collection<Team> getAllTeams(User owner, User manager, User student, Integer pageSize, Integer currentPage);
+
   Long countAllTeams(String name, User user, Integer pageSize, Integer currentPage);
 }

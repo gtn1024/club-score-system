@@ -9,7 +9,9 @@ export namespace Model {
   export type Team = {
     id: number;
     name: string;
+    picture?: string;
     owner: User;
     admins: User[];
+    memberCount: number;
   };
 }

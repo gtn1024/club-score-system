@@ -25,11 +25,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/team")
-public class TeamController {
+public class AdminTeamController {
   private final TeamService teamService;
   private final UserService userService;
 
-  public TeamController(TeamService teamService, UserService userService) {
+  public AdminTeamController(TeamService teamService, UserService userService) {
     this.teamService = teamService;
     this.userService = userService;
   }

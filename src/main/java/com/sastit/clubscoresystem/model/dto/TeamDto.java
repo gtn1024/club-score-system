@@ -7,15 +7,19 @@ import java.util.Collection;
 public record TeamDto(
   Long id,
   String name,
+  String picture,
   UserDto owner,
-  Collection<UserDto> admins
+  Collection<UserDto> admins,
+  long memberCount
 ) {
   public static TeamDto teamToTeamDto(Team team) {
     return new TeamDto(
       team.getId(),
       team.getName(),
+      team.getPicture(),
       UserDto.userToUserDto(team.getOwner()),
-      UserDto.usersToUserDtos(team.getAdmins())
+      UserDto.usersToUserDtos(team.getAdmins()),
+      team.getStudents().size()
     );
   }
 }

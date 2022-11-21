@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Service
 public class TeamServiceImpl implements TeamService {
@@ -34,6 +35,20 @@ public class TeamServiceImpl implements TeamService {
     }
     return teamRepository
       .findAllByNameContainingAndOwnerOrAdminsContains(name, user, user, PageRequest.of(currentPage - 1, pageSize));
+  }
+
+  @Override
+  public Collection<Team> getAllTeams(User owner, User manager, User student, Integer pageSize, Integer currentPage) {
+    if (owner != null) {
+      return teamRepository.findAllByOwnerIs(owner, PageRequest.of(currentPage - 1, pageSize));
+    }
+    if (manager != null) {
+      return teamRepository.findAllByAdminsContaining(manager, PageRequest.of(currentPage - 1, pageSize));
+    }
+    if (student != null) {
+      return teamRepository.findAllByStudentsContaining(student, PageRequest.of(currentPage - 1, pageSize));
+    }
+    return Collections.emptyList();
   }
 
   @Override

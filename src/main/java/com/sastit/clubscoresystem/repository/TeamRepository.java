@@ -13,6 +13,9 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
   Collection<Team> findAllByNameContainingAndOwnerOrAdminsContains(String name, User owner, User admin, PageRequest pageRequest);
 
   Collection<Team> findAllByNameContaining(String name, PageRequest pageRequest);
+  Collection<Team> findAllByOwnerIs(User owner, PageRequest pageRequest);
+  Collection<Team> findAllByAdminsContaining(User admin, PageRequest pageRequest);
+  Collection<Team> findAllByStudentsContaining(User student, PageRequest pageRequest);
 
   Long countAllByNameContainingAndOwnerOrAdminsContains(String name, User owner, User admin, PageRequest pageRequest);
 

@@ -1,15 +1,15 @@
 import { RouteRecordRaw } from "vue-router";
 import { AdminLayout } from "../layout/AdminLayout";
-import { Home } from "../views/admin/Home";
-import { Team } from "../views/admin/Team";
+import { Home as AdminHome } from "../views/admin/Home";
+import { Team as AdminTeam } from "../views/admin/Team";
 import { Login } from "../views/login/Login";
-import { Welcome } from "../views/Welcome";
+import { Home } from "../views/Home";
 
 export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
-    component: Welcome,
+    component: Home,
   },
   {
     path: "/login",
@@ -25,12 +25,12 @@ export const routes: RouteRecordRaw[] = [
       {
         path: "home",
         name: "admin-home",
-        component: Home,
+        component: AdminHome,
       },
       {
         path: "team",
         name: "admin-team",
-        component: Team,
+        component: AdminTeam,
       },
     ],
   },
