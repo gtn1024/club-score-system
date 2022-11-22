@@ -1,8 +1,10 @@
-import { NGi, NGrid, NH2 } from "naive-ui";
+import { NCard, NGi, NGrid, NH2 } from "naive-ui";
 import { defineComponent, onMounted, ref } from "vue";
 import { http } from "../../shared/Http";
 import { Model } from "../../shared/types/models";
 import { TeamItem } from "./TeamItem";
+import defaultTeamPic from "../../assets/team/default.jpg";
+import addTeamPic from "../../assets/team/add.jpg";
 
 type TeamScope = "joined" | "created" | "managed" | "all";
 
@@ -35,9 +37,19 @@ export const TeamGroup = defineComponent({
         <NGrid xGap={12} cols={4}>
           {teams.value.map((team) => (
             <NGi style="padding: 16px">
-              <TeamItem team={team} />
+              <TeamItem team={team} picture={defaultTeamPic} />
             </NGi>
           ))}
+          {props.scope === "created" ? (
+            <NGi style="padding: 16px">
+              <NCard title="创建团队">
+                {{
+                  cover: () => <img src={addTeamPic} alt="创建团队" width="100%" height={200} />,
+                  default: () => <>快来创建自己的团队吧</>,
+                }}
+              </NCard>
+            </NGi>
+          ) : null}
         </NGrid>
       </>
     );
