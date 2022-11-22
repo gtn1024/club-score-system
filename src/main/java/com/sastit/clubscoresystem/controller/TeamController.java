@@ -31,7 +31,7 @@ public class TeamController {
     @RequestParam(required = false, defaultValue = "all") String scope
   ) {
     User user = null;
-    if (!scope.equals("all")) {
+    if (!"all".equals(scope)) {
       if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
         Long id = Long.parseLong(sid);
         user = userService.findById(id).orElseThrow(() -> new LoginException(401, "用户不存在"));
