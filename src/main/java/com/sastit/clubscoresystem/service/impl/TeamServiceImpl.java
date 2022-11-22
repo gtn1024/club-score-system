@@ -24,6 +24,11 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
+  public Team updateTeam(Team team) {
+    return teamRepository.save(team);
+  }
+
+  @Override
   public boolean isTeamExistByName(String teamName) {
     return teamRepository.existsByName(teamName);
   }
@@ -58,5 +63,20 @@ public class TeamServiceImpl implements TeamService {
     }
     return teamRepository
       .countAllByNameContainingAndOwnerOrAdminsContains(name, user, user, PageRequest.of(currentPage - 1, pageSize));
+  }
+
+  @Override
+  public void deleteTeam(Team team) {
+    teamRepository.delete(team);
+  }
+
+  @Override
+  public Collection<Team> findByOwner(User user) {
+    return teamRepository.findAllByOwnerIs(user, null);
+  }
+
+  @Override
+  public void deleteAll(Collection<Team> teams) {
+    teamRepository.deleteAll(teams);
   }
 }

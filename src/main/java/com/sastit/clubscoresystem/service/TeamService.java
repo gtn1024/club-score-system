@@ -7,6 +7,7 @@ import java.util.Collection;
 
 public interface TeamService {
   Team newTeam(Team team);
+  Team updateTeam(Team team);
 
   boolean isTeamExistByName(String teamName);
 
@@ -15,4 +16,9 @@ public interface TeamService {
   Collection<Team> getAllTeams(User owner, User manager, User student, Integer pageSize, Integer currentPage);
 
   Long countAllTeams(String name, User user, Integer pageSize, Integer currentPage);
+
+  void deleteTeam(Team team);
+
+  Collection<Team> findByOwner(User user);
+  void deleteAll(Collection<Team> teams);
 }

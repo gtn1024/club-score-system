@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.StpUtil;
 import com.sastit.clubscoresystem.exception.user.UserException;
+import com.sastit.clubscoresystem.integration.IntegrationService;
 import com.sastit.clubscoresystem.model.dto.UserDto;
 import com.sastit.clubscoresystem.model.entity.User;
 import com.sastit.clubscoresystem.model.response.AdminUserResponse;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/user")
 public class AdminUserController {
   private final UserService userService;
+  private final IntegrationService integrationService;
 
-  public AdminUserController(UserService userService) {
+  public AdminUserController(UserService userService, IntegrationService integrationService) {
     this.userService = userService;
+    this.integrationService = integrationService;
   }
 
   @GetMapping
@@ -48,7 +51,7 @@ public class AdminUserController {
       Long uid = Long.parseLong(sid);
       if (uid.equals(id)) throw new UserException(400, "你删了自己还怎么登录？");
     }
-    userService.deleteUser(id);
+    integrationService.removeUser(id);
     return HttpResponse.success(200, "删除成功", null);
   }
 }
