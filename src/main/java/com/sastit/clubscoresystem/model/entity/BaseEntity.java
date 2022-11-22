@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,9 +21,11 @@ public abstract class BaseEntity {
   private Long id;
 
   @CreationTimestamp
+  @Column(nullable = false, updatable = false)
   private Instant createdAt;
 
   @UpdateTimestamp
+  @Column(nullable = false)
   private Instant updatedAt;
 
   private Boolean deleted = false;
