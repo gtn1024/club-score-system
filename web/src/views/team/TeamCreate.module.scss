@@ -1,0 +1,15 @@
+.container {
+  height: 100vh;
+  display: flex;
+  --container-width: 800px;
+
+  > .content {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: var(--container-width);
+    flex: 1;
+    padding-bottom: 40px;
+  }
+}

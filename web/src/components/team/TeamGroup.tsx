@@ -5,6 +5,7 @@ import { Model } from "../../shared/types/models";
 import { TeamItem } from "./TeamItem";
 import defaultTeamPic from "../../assets/team/default.jpg";
 import addTeamPic from "../../assets/team/add.jpg";
+import { RouterLink } from "vue-router";
 
 type TeamScope = "joined" | "created" | "managed" | "all";
 
@@ -44,7 +45,11 @@ export const TeamGroup = defineComponent({
             <NGi style="padding: 16px">
               <NCard title="创建团队">
                 {{
-                  cover: () => <img src={addTeamPic} alt="创建团队" width="100%" height={200} />,
+                  cover: () => (
+                    <RouterLink to={{ name: "team-create" }}>
+                      <img src={addTeamPic} alt="创建团队" width="100%" height={200} />
+                    </RouterLink>
+                  ),
                   default: () => <>快来创建自己的团队吧</>,
                 }}
               </NCard>

@@ -5,6 +5,7 @@ import { Team as AdminTeam } from "../views/admin/Team";
 import { Login } from "../views/login/Login";
 import { Home } from "../views/Home";
 import { AdminUser } from "../views/admin/AdminUser";
+import { TeamCreate } from "../views/team/TeamCreate";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -16,6 +17,17 @@ export const routes: RouteRecordRaw[] = [
     path: "/login",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/team",
+    name: "team",
+    children: [
+      {
+        path: "create",
+        name: "team-create",
+        component: TeamCreate,
+      },
+    ],
   },
   {
     path: "/admin",
