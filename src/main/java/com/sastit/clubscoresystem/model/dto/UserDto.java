@@ -17,8 +17,8 @@ public record UserDto(
       user.getId(),
       user.getUsername(),
       user.getRealName(),
-      user.getSuperAdmin(),
-      user.getAdmin()
+      user.isSuperAdmin(),
+      user.isAdmin()
     );
   }
 

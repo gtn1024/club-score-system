@@ -29,12 +29,11 @@ public class StpInterfaceImpl implements StpInterface {
       return userService.findById(id).map(u -> {
         List<String> roles = new ArrayList<>();
         roles.add(User.Role.USER);
-        if (u.getAdmin()) roles.add(User.Role.ADMIN);
-        if (u.getSuperAdmin()) roles.add(User.Role.SUPER_ADMIN);
+        if (u.isAdmin()) roles.add(User.Role.ADMIN);
+        if (u.isSuperAdmin()) roles.add(User.Role.SUPER_ADMIN);
         return roles;
       }).orElseThrow(() -> new LoginException(401, "用户不存在"));
     }
-    // TODO: use custom exception
     throw new RuntimeException("内部错误");
   }
 }

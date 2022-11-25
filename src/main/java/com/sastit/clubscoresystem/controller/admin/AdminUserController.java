@@ -49,7 +49,9 @@ public class AdminUserController {
   public ResponseEntity<HttpResponse<Void>> deleteUser(@PathVariable Long id) {
     if (StpUtil.getTokenInfo().getLoginId() instanceof String sid) {
       Long uid = Long.parseLong(sid);
+      User user = userService.findById(uid).orElseThrow(() -> new UserException(404, "用户不存在"));
       if (uid.equals(id)) throw new UserException(400, "你删了自己还怎么登录？");
+      if (user.isSuperAdmin()) throw new UserException(400, "你不能删除超级管理员");
     }
     integrationService.removeUser(id);
     return HttpResponse.success(200, "删除成功", null);

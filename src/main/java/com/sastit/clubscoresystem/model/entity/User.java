@@ -33,9 +33,9 @@ public class User extends BaseEntity {
   @OneToMany
   private Set<Team> ownTeams = Set.of();
 
-  private Boolean superAdmin = false;
+  private boolean superAdmin = false;
 
-  private Boolean admin = false;
+  private boolean admin = false;
 
   public static class Role {
     public static final String SUPER_ADMIN = "super_admin";
